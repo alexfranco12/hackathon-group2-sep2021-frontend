@@ -1,43 +1,41 @@
 import './App.css';
-import { useState, useEffect } from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { LikedDogsContext } from './utilities/LikedDogsContext';
 import NavBar from './components/NavBar/NavBar';
 import DogDetailPage from './pages/DogDetailPage/DogDetailPage';
 import HomePage from './pages/HomePage/HomePage';
 import BookmarkPage from './pages/BookmarkPage/BookmarkPage';
 import Footer from './components/Footer/Footer';
 
+
 const App = () => {
-
-  let likedDogsArray = []
-
-  const handleAddDog = (dogData) => {
-    likedDogsArray.push(dogData)
-    console.log(likedDogsArray)
-  }
+  let likedDogs = []
 
   return (
-    <>
-    <NavBar />
     <div className="App">
+      <NavBar />
 
-      <Switch>
+      <div className="Main">
+        <Switch>
+          {/* Landing Page */}
 
-      <Route exact path="/">
-          <HomePage handleAddDog={handleAddDog} />
-        </Route>
-        <Route path="/bookmark">
-          <BookmarkPage  likedDogsArray={likedDogsArray} handleAddDog={handleAddDog}/>
-        </Route>
-        <Route path="/details">
-          <DogDetailPage></DogDetailPage>
-        </Route>
+          <LikedDogsContext.Provider value={likedDogs}>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/bookmark" component={BookmarkPage} />
+          </LikedDogsContext.Provider>
 
-      </Switch>
+          <Route path="/detail/:id" component={DogDetailPage} />
+
+          {/* chat component */}
+          
+          {/* not found page */}
+          
+        </Switch>
+      </div>
+      
 
       <Footer />
     </div>
-    </>
   );
 }
 
